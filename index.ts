@@ -199,3 +199,25 @@ class LineSeparateAfterRotate {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    lsar : LineSeparateAfterRotate = new LineSeparateAfterRotate()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.lsar.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.lsar.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.lsar.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
